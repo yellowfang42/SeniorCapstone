@@ -8,6 +8,10 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 
 public class CharQuestionGenerator extends JButton implements ActionListener{
     
@@ -51,78 +55,50 @@ public class CharQuestionGenerator extends JButton implements ActionListener{
         if(r1.isSelected()){
             r2.setSelected(false);
             r3.setSelected(false);
-            JOptionPane.showMessageDialog(r1, callUp());
+            JOptionPane.showMessageDialog(r1, callUp(1));
         }
         
         if(r2.isSelected()){
             r1.setSelected(false);
             r3.setSelected(false);
-            JOptionPane.showMessageDialog(r2, callUpFi());
+            JOptionPane.showMessageDialog(r2, callUp(5));
         }
         
         if(r3.isSelected()){
             r2.setSelected(false);
             r1.setSelected(false);
-            JOptionPane.showMessageDialog(r3, callUpTen());
+            JOptionPane.showMessageDialog(r3, callUp(10));
         }
     }
     
     //god has forsaken me i tried to make this pretty but nooooo
-    public java.util.List<String> callUp(){
-        java.util.List<String> quests = new ArrayList<>();
-        quests.add("What would happen if the characters best friend died?");
-        quests.add("Does the character solve problems by force, logical action, or some other method?");
-        quests.add("How does the character react to surprise revelations?");
-        quests.add("What dream has the character had as a child?");
-        quests.add("What is the characters relationship with family?");
-        quests.add("How does the character feel about authority?");
-        quests.add("What is the quickest way to the character's heart?");
-        quests.add("Is the character religious?");
-        quests.add("What stops the character from leaving the plot?");
-        quests.add("Can the character face their fears or do they run away?");
-        quests.add("Is the character afraid of the antagonist, or annoyed/sometihng else?");
-        
+    public String callUp(int numberOfElements){
         charQuestData obj = new charQuestData();
-        int numberOfElements = 1;
-        return obj.randomOne(quests, numberOfElements);
+        java.util.List<String> quotes = obj.randomOne(getQuestions2(), numberOfElements);
+        String strquotes = "";
+        for (String quote : quotes){
+            strquotes = strquotes + quote + "\n";
+        }
+        return strquotes;
     }
     
-    public java.util.List<String> callUpFi(){
+    public java.util.List<String> getQuestions2(){
         java.util.List<String> quests = new ArrayList<>();
-        quests.add("What would happen if the characters best friend died?");
-        quests.add("Does the character solve problems by force, logical action, or some other method?");
-        quests.add("How does the character react to surprise revelations?");
-        quests.add("What dream has the character had as a child?");
-        quests.add("What is the characters relationship with family?");
-        quests.add("How does the character feel about authority?");
-        quests.add("What is the quickest way to the character's heart?");
-        quests.add("Is the character religious?");
-        quests.add("What stops the character from leaving the plot?");
-        quests.add("Can the character face their fears or do they run away?");
-        quests.add("Is the character afraid of the antagonist, or annoyed/sometihng else?");
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader(
+                    "/Users/Lindsie/Documents/questionfile.txt"));
+            String line = reader.readLine();
+            while (line != null){
+                quests.add(line);
+                line = reader.readLine();
+            }
+            reader.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
         
-        charQuestData obj = new charQuestData();
-        int numberOfElements = 5;
-        return obj.randomOne(quests, numberOfElements);
-    }
-    
-    public java.util.List<String> callUpTen(){
-        java.util.List<String> quests = new ArrayList<>();
-        quests.add("What would happen if the characters best friend died?");
-        quests.add("Does the character solve problems by force, logical action, or some other method?");
-        quests.add("How does the character react to surprise revelations?");
-        quests.add("What dream has the character had as a child?");
-        quests.add("What is the characters relationship with family?");
-        quests.add("How does the character feel about authority?");
-        quests.add("What is the quickest way to the character's heart?");
-        quests.add("Is the character religious?");
-        quests.add("What stops the character from leaving the plot?");
-        quests.add("Can the character face their fears or do they run away?");
-        quests.add("Is the character afraid of the antagonist, or annoyed/sometihng else?");
-        
-        charQuestData obj = new charQuestData();
-        int numberOfElements = 10;
-        return obj.randomOne(quests, numberOfElements);
+        return quests;
     }
     
     public void randomOne(java.util.List<String> quests, int totalItems) {
@@ -140,7 +116,7 @@ public class CharQuestionGenerator extends JButton implements ActionListener{
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // run the bitch
+        // run
         new CharQuestionGenerator().init();    
     }
     
